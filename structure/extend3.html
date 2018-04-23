@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app">
+		application
+	</div>
+</body>
+
+<script>
+(function(window, undefined) {
+	var document = window.document,
+	navigator = window.navigator,
+	location = window.location;
+
+	var jQuery  = (function(){
+		var
+	    // ...
+	    jQuery = function(selector, context) {
+	        // 内部进行实例化 外部可以不使用new关键字
+	        return new jQuery.fn.init(selector, context, rootjQuery);
+	    },
+	    rootjQuery;
+	 
+	    // jQuery.prototype 即是 jQuery 的原型，挂载在上面的方法，即可让所有生成的 jQuery 对象使用
+	    jQuery.fn = jQuery.prototype = {
+	    	constructor:jQuery,
+	       
+	        init: function(selector, context, rootjQuery) {
+	        	this.selector = document.querySelector(selector);
+	            // ...
+	            return this;
+	        }
+	    }
+	    // 让构造函数的原型指向父函数的原型
+	    jQuery.fn.init.prototype = jQuery.fn;
+
+
+		jQuery.extend = jQuery.fn.extend = function() {
+			var options, name, src, copy, copyIsArray, clone,
+				target = arguments[0] || {},
+				i = 1,
+				length = arguments.length,
+				deep = false;
+
+			// Handle a deep copy situation
+			if ( typeof target === "boolean" ) {
+				deep = target;
+				target = arguments[1] || {};
+				// skip the boolean and the target
+				i = 2;
+			}
+
+			// Handle case when target is a string or something (possible in deep copy)
+			if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+				target = {};
+			}
+
+			// extend jQuery itself if only one argument is passed
+			if ( length === i ) {
+				target = this;
+				--i;
+			}
+
+			for ( ; i < length; i++ ) {
+				// Only deal with non-null/undefined values
+				if ( (options = arguments[ i ]) != null ) {
+					// Extend the base object
+					for ( name in options ) {
+						src = target[ name ];
+						copy = options[ name ];
+
+						// Prevent never-ending loop
+						if ( target === copy ) {
+							continue;
+						}
+
+						// Recurse if we're merging plain objects or arrays
+						if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+							if ( copyIsArray ) {
+								copyIsArray = false;
+								clone = src && jQuery.isArray(src) ? src : [];
+
+							} else {
+								clone = src && jQuery.isPlainObject(src) ? src : {};
+							}
+
+							// Never move original objects, clone them
+							target[ name ] = jQuery.extend( deep, clone, copy );
+
+						// Don't bring in undefined values
+						} else if ( copy !== undefined ) {
+							target[ name ] = copy;
+						}
+					}
+				}
+			}
+
+			// Return the modified object
+			return target;
+		};
+	    return jQuery; 
+	})()
+    
+ 
+
+
+// Expose jQuery to the global object
+window.jQuery = window.$ = jQuery;
+
+// Expose jQuery as an AMD module, but only for AMD loaders that
+// understand the issues with loading multiple versions of jQuery
+// in a page that all might call define(). The loader will indicate
+// they have special allowances for multiple jQuery versions by
+// specifying define.amd.jQuery = true. Register as a named module,
+// since jQuery can be concatenated with other files that may use define,
+// but not use a proper concatenation script that understands anonymous
+// AMD modules. A named AMD is safest and most robust way to register.
+// Lowercase jquery is used because AMD module names are derived from
+// file names, and jQuery is normally delivered in a lowercase file name.
+// Do this after creating the global so that if an AMD module wants to call
+// noConflict to hide this version of jQuery, it will work.
+if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
+	define( "jquery", [], function () { return jQuery; } );
+}
+
+
+})(window);
+
+
+console.log($('#app'))
+</script>
+<script id="new">
+var class2type = {},
+toString = Object.prototype.toString;
+
+function type(obj){
+
+	return obj == null ?
+		String( obj ) :
+		class2type[ toString.call(obj) ] || "object";
+
+}
+function isFunction( obj ) {
+	return type(obj) === "function";
+}
+"Boolean Number String Function Array Date RegExp Object".split(" ").forEach(function( name) {
+	
+	class2type[ "[object " + name + "]" ] = name.toLowerCase();
+});
+var num = 99;
+var str = '99';
+var fun = function(){};
+
+console.log(isFunction(fun))
+</script>
+</html>

@@ -1,0 +1,24 @@
+<script src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script>
+(function(){
+
+
+
+var undefined = 99;
+console.log(undefined,'golbal') //=> 99
+
+
+;(function(window,undefined){
+// 在这里的undefined是为防止外界修改undefined
+// 例如
+console.log(undefined,'sandbox');
+})(window)
+
+
+
+})()
+
+
+
+
+</script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app">
+		application
+	</div>
+</body>
+
+<script>
+(function(window, undefined) {
+	var document = window.document,
+	navigator = window.navigator,
+	location = window.location;
+
+	var jQuery  = (function(){
+		var
+	    // ...
+	    jQuery = function(selector, context) {
+	        // 内部进行实例化 外部可以不使用new关键字
+	        return new jQuery.fn.init(selector, context, rootjQuery);
+	    },
+	    rootjQuery;
+	 
+	    // jQuery.prototype 即是 jQuery 的原型，挂载在上面的方法，即可让所有生成的 jQuery 对象使用
+	    jQuery.fn = jQuery.prototype = {
+	    	constructor:jQuery,
+	       
+	        init: function(selector, context, rootjQuery) {
+	        	this.selector = document.querySelector(selector);
+	            // ...
+	            return this;
+	        }
+	    }
+	    // 让构造函数的原型指向父函数的原型
+	    jQuery.fn.init.prototype = jQuery.fn;
+
+
+	    return jQuery; 
+	})()
+    
+ 
+
+
+// Expose jQuery to the global object
+window.jQuery = window.$ = jQuery;
+
+// Expose jQuery as an AMD module, but only for AMD loaders that
+// understand the issues with loading multiple versions of jQuery
+// in a page that all might call define(). The loader will indicate
+// they have special allowances for multiple jQuery versions by
+// specifying define.amd.jQuery = true. Register as a named module,
+// since jQuery can be concatenated with other files that may use define,
+// but not use a proper concatenation script that understands anonymous
+// AMD modules. A named AMD is safest and most robust way to register.
+// Lowercase jquery is used because AMD module names are derived from
+// file names, and jQuery is normally delivered in a lowercase file name.
+// Do this after creating the global so that if an AMD module wants to call
+// noConflict to hide this version of jQuery, it will work.
+if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
+	define( "jquery", [], function () { return jQuery; } );
+}
+
+
+})(window);
+
+
+console.log($('#app'))
+</script>
+<script id="new">
+// 让返回出去的实例化对象的原型只想自身原型
+	(function(){
+		var test = function(a,b,c){
+			return new test.prototype.init(a,b,c)
+		}
+		test.prototype = {
+			constructor:test,
+			init:function(a,b,c){
+				return Object.assign(this,{result:a+b+c})
+			},
+			version:'1.0'
+		}
+		
+		test.prototype.init.prototype = test.prototype;
+
+		window.test = test;
+	})()
+	console.log(test(1,3,5))
+</script>
+</html>
