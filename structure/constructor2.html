@@ -71,7 +71,7 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 console.log($('#app'))
 </script>
 <script id="new">
-// 让返回出去的实例化对象的原型只想自身原型
+// 让返回出去的实例化对象的原型只想指向原型
 	(function(){
 		var test = function(a,b,c){
 			return new test.prototype.init(a,b,c)

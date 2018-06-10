@@ -55,6 +55,7 @@
 			}
 
 			// Handle case when target is a string or something (possible in deep copy)
+			
 			if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
 				target = {};
 			}
@@ -102,6 +103,19 @@
 			// Return the modified object
 			return target;
 		};
+		jQuery.extend({
+			noConflict: function( deep ) {
+				if ( window.$ === jQuery ) {
+					window.$ = _$;
+				}
+
+				if ( deep && window.jQuery === jQuery ) {
+					window.jQuery = _jQuery;
+				}
+
+				return jQuery;
+			}
+		})
 	    return jQuery; 
 	})()
     
